@@ -1,5 +1,5 @@
-#ifndef __SENSOR_H__
-#define __SENSOR_H__
+#ifndef __MY_SENSOR_H__
+#define __MY_SENSOR_H__
 
 /*
  * @brief Enum of sensor types.

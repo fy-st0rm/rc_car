@@ -1,6 +1,11 @@
 #ifndef __WHEELS_H__
 #define __WHEELS_H__
 
+#define FORWARD 1
+#define BACKWARD 2
+#define TURN_LEFT 3
+#define TURN_RIGHT 4
+
 /*
  * @brief Enum of direction.
  */
@@ -132,6 +137,14 @@ static void move_backward(wheels_controls wheels) {
 	deactivate_wheel(wheels, LEFT_1);
 
 	activate_wheel(wheels, RIGHT_2);
+	deactivate_wheel(wheels, RIGHT_1);
+}
+
+static void brake(wheels_controls wheels) {
+	deactivate_wheel(wheels, LEFT_2);
+	deactivate_wheel(wheels, LEFT_1);
+
+	deactivate_wheel(wheels, RIGHT_2);
 	deactivate_wheel(wheels, RIGHT_1);
 }
 
