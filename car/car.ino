@@ -3,6 +3,9 @@
 #include "wheels.h"
 #include "config.h"
 
+#define MOVE_SPEED 115
+#define TURN_SPEED 169
+
 enum PINS {
 	PIN_0,
 	PIN_1,
@@ -25,8 +28,8 @@ static sensor_controls sensor;
 static wheels_controls wheels;
 
 void walk_in_dir(int dir) {
-	set_wheel_speed(wheels, LEFT, 100);
-	set_wheel_speed(wheels, RIGHT, 100);
+	set_wheel_speed(wheels, LEFT , MOVE_SPEED);
+	set_wheel_speed(wheels, RIGHT, MOVE_SPEED);
 	switch (dir) {
 		case FORWARD:
 			move_forward(wheels);
@@ -35,13 +38,13 @@ void walk_in_dir(int dir) {
 			move_backward(wheels);
 			break;
 		case TURN_LEFT:
-			set_wheel_speed(wheels, LEFT, 150);
-			set_wheel_speed(wheels, RIGHT, 150);
+			set_wheel_speed(wheels, LEFT , TURN_SPEED);
+			set_wheel_speed(wheels, RIGHT, TURN_SPEED);
 			turn_left(wheels);
 			break;
 		case TURN_RIGHT:
-			set_wheel_speed(wheels, LEFT, 150);
-			set_wheel_speed(wheels, RIGHT, 150);
+			set_wheel_speed(wheels, LEFT , TURN_SPEED);
+			set_wheel_speed(wheels, RIGHT, TURN_SPEED);
 			turn_right(wheels);
 			break;
 		default:
@@ -94,7 +97,7 @@ void loop() {
 
 	long cm = read_sensor(sensor, SENSOR_FRONT);
 	if (cm <= 15) {
-		Serial.println(cm);++
+		Serial.println(cm);
 	}
 	walk_in_dir(dir);
 }

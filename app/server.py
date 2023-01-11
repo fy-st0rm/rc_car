@@ -54,7 +54,7 @@ class Server:
 
 					# Calculating the time difference in miliseconds.
 					end_time = time.time_ns() / 10_00_000
-					print(f"Frame received after: {end_time - start_time} ms | Packet size: {packet}");
+					#print(f"Frame received after: {end_time - start_time} ms | Packet size: {packet}");
 					start_time = end_time
 
 				elif data.decode("utf-8").split(" ")[0] == "__SENSOR__":
