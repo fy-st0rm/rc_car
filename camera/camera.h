@@ -38,15 +38,15 @@ static void init_esp_camera() {
 	
 	// if PSRAM IC present, init with UXGA resolution and higher JPEG quality
 	//						for larger pre-allocated frame buffer.
-	if(psramFound()){
-		config.frame_size = FRAMESIZE_UXGA;
-		config.jpeg_quality = 10;
-		config.fb_count = 2;
-	} else {
-		config.frame_size = FRAMESIZE_SVGA;
-		config.jpeg_quality = 12;
-		config.fb_count = 1;
-	}
+	//if(psramFound()){
+	//	config.frame_size = FRAMESIZE_UXGA;
+	//	config.jpeg_quality = 10;
+	//	config.fb_count = 2;
+	//} else {
+	config.frame_size = FRAMESIZE_VGA;
+	config.jpeg_quality = 20;
+	config.fb_count = 1;
+	
 
 #if defined(CAMERA_MODEL_ESP_EYE)
 	pinMode(13, INPUT_PULLUP);
@@ -67,8 +67,8 @@ static void init_esp_camera() {
 		s->set_brightness(s, 1); // up the brightness just a bit
 		s->set_saturation(s, -2); // lower the saturation
 	}
-	// drop down frame size for higher initial frame rate
-	s->set_framesize(s, FRAMESIZE_QVGA);
+	//TODO: drop down frame size for higher initial frame rate
+	//s->set_framesize(s, FRAMESIZE_QVGA);
 
 #if defined(CAMERA_MODEL_M5STACK_WIDE) || defined(CAMERA_MODEL_M5STACK_ESP32CAM)
 	s->set_vflip(s, 1);
@@ -86,6 +86,7 @@ void send_image_to_sv(WiFiClient* client) {
 	uint8_t* buff = fb->buf;
 	size_t   len  = fb->len;
 
+	// Sending image to server
 	client->print(HEADER);
 	for (int i = 0; i < len; i += BUFFER_SIZE) {
 		if (i + BUFFER_SIZE < len) {
@@ -97,6 +98,7 @@ void send_image_to_sv(WiFiClient* client) {
 		}
 	}
 	client->print(FOOTER);
+
 	esp_camera_fb_return(fb);
 }
 

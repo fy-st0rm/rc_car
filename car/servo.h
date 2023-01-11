@@ -8,10 +8,10 @@
  */
 
 enum SERVO {
-	SERVO_LEFT,
-	SERVO_RIGHT,
 	SERVO_FRONT,
 	SERVO_BACK,
+	SERVO_LEFT,
+	SERVO_RIGHT,
 	SERVO_SIZE
 };
 
@@ -25,18 +25,15 @@ typedef struct {
 
 /*
  * @brief Function to construct servo.
- * @param servo_left: Left servo pin.
- * @param servo_right: Right servo pin.
- * @param servo_front: Front servo pin.
- * @param servo_back: Back servo pin.
+ * @param pins: Array of pins.
+ * @param pin_amt: Number of pins to be attached.
  */
 
-static servo_controls construct_servo(int servo_left, int servo_right, int servo_front, int servo_back) {
+static servo_controls construct_servo(int* pins, int pin_amt) {
 	servo_controls control;
-	control.servos[SERVO_LEFT].attach(servo_left);
-	control.servos[SERVO_RIGHT].attach(servo_right);
-	control.servos[SERVO_FRONT].attach(servo_front);
-	control.servos[SERVO_BACK].attach(servo_back);
+	for (int i = 0; i < pin_amt; i++) {
+		control.servos[i].attach(pins[i]);
+	}
 	return control;
 }
 
