@@ -18,7 +18,6 @@ class Server:
 	def __construct_server(self, ip, port):
 		self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-		self.server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
 		self.server.bind((ip, port))
 
 	def __sender(self, conn):
