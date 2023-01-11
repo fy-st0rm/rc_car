@@ -11,8 +11,9 @@ class Server:
 		self.__construct_server(ip, port)
 
 		self.running = True
-		self.image_buffer = []
-		self.send_buffer = []
+		self.image_buffer  = []
+		self.send_buffer   = []
+		self.sensor_buffer = []
 
 	def __construct_server(self, ip, port):
 		self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -55,6 +56,10 @@ class Server:
 					end_time = time.time_ns() / 10_00_000
 					print(f"Frame received after: {end_time - start_time} ms | Packet size: {packet}");
 					start_time = end_time
+
+				elif data.decode("utf-8").split(" ")[0] == "__SENSOR__":
+					value = int(data.decode("utf-8").split(" ")[1])
+					self.sensor_buffer.append(value)
 
 			except Exception as e: 
 				print(f"[SERVER ERROR]: {e}");

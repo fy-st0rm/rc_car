@@ -50,6 +50,11 @@ class App:
 		self.right_turn_color = BUTTON_COLOR_INACTIVE
 		self.flash_color	  = BUTTON_COLOR_INACTIVE
 
+		# Warning
+		self.is_warned    = False
+		self.warn_start   = 0
+		self.warn_timeout = 1
+
 		self.__load_assets()
 
 	def __load_assets(self):
@@ -57,6 +62,7 @@ class App:
 		self.rot_right_img = pygame.image.load("assets/rotate-right.png")
 		self.flash_off_img = pygame.image.load("assets/flash_off.png")
 		self.flash_on_img  = pygame.image.load("assets/flash_on.png")
+		self.warning_img   = pygame.image.load("assets/warning.png")
 		self.car_model     = pygame.image.load("assets/car-top-view.png").convert()
 		self.car_model.set_alpha(150)
 
@@ -242,6 +248,18 @@ class App:
 		# POV ui
 		pov_points = self.__make_triangle(pov_pos, 50, 60, -(self.angle + 90))
 		pygame.draw.polygon(self.ui_surface, POV_COLOR, pov_points)
+
+		# Warning sigh
+		if len(self.server.sensor_buffer) > 0:
+			if not self.is_warned:
+				self.is_warned = True
+				self.warn_start = time.time()
+				self.server.sensor_buffer.pop(0)
+
+		if self.is_warned:
+			if time.time() - self.warn_start >= self.warn_timeout:
+				self.is_warned = False
+			self.ui_surface.blit(self.warning_img, (self.vp_width / 1.1 - self.warning_img.get_width() / 2, self.vp_height / 9))
 
 	def __render_viewport(self):
 		self.__load_image()

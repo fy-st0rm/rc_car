@@ -1,5 +1,7 @@
-SERVER_IP   = "192.168.1.68"
-SERVER_PORT = 5000
+import socket
+
+SERVER_IP   = socket.gethostbyname(socket.gethostname())
+SERVER_PORT = 6969
 
 BUFFER_SIZE = 70_000
 

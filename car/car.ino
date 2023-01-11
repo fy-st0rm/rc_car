@@ -21,6 +21,7 @@ enum PINS {
 };
 
 static servo_controls servo;
+static sensor_controls sensor;
 static wheels_controls wheels;
 
 void walk_in_dir(int dir) {
@@ -64,6 +65,10 @@ void setup() {
 	int servo_pins[1] = { PIN_11 };
 	servo = construct_servo(servo_pins, 1);
 	rotate_servo(servo, SERVO_FRONT, 90);
+	
+	// Initializing the sensor
+	int sensor_pins[2] = { PIN_3, PIN_4 };
+	sensor = construct_sensor(sensor_pins, 2);
 
 	while (Serial.available() == 0);
 	while (Serial.available() > 0) {
@@ -85,6 +90,11 @@ void loop() {
 		} else if (header == ANGLE) {
 			rotate_servo(servo, SERVO_FRONT, value);
 		}
+	}
+
+	long cm = read_sensor(sensor, SENSOR_FRONT);
+	if (cm <= 15) {
+		Serial.println(cm);++
 	}
 	walk_in_dir(dir);
 }

@@ -78,6 +78,13 @@ void setup() {
 	Serial.write(69);
 }
 
+bool is_number(String value) {
+	for (int i = 0; i < value.length(); i++) {
+		if (isdigit(value.charAt(i))) return true;
+		return false;
+	}
+}
+
 void loop() {
 	send_image_to_sv(&client);
 
@@ -99,6 +106,15 @@ void loop() {
 			}
 		} else {
 			Serial.println(inst);
+		}
+	}
+
+	if (Serial.available() > 0) {
+		String data = Serial.readStringUntil('\n');
+		if (is_number(data)) {
+			String reply = "__SENSOR__ " + data;
+			delay(50);
+			client.print(reply);
 		}
 	}
 }
