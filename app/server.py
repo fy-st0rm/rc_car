@@ -60,7 +60,7 @@ class Server:
 				print(f"[SERVER ERROR]: {e}");
 
 	def send(self, header, data):
-		self.send_buffer.append((f"{header} {data}\r".encode("utf-8")))
+		self.send_buffer.append((f"{header} {data}\n".encode("utf-8")))
 
 	def start(self):
 		self.server.listen()

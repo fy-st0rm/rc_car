@@ -43,8 +43,8 @@ typedef struct {
  * @param controls: sensor_controls structure.
  */
 
-static void __init_sensors_pin(sensor_controls controls) {
-	for (int i = 0; i < SENSOR_SIZE; i++) {
+static void __init_sensors_pin(sensor_controls controls, int size) {
+	for (int i = 0; i < size; i++) {
 		sensor_pins pin = controls.types[i];
 		pinMode(pin.ping_pin, OUTPUT);
 		pinMode(pin.echo_pin, INPUT);
@@ -53,31 +53,17 @@ static void __init_sensors_pin(sensor_controls controls) {
 
 /*
  * @brief Function to contruct sensor.
- * @param sensor_front_ping: Pin no of front sensor ping.
- * @param sensor_front_echo: Pin no of front sensor echo.
- * @param sensor_back_ping: Pin no of back sensor ping.
- * @param sensor_back_echo: Pin no of back sensor echo.
- * @param sensor_left_ping: Pin no of left sensor ping.
- * @param sensor_left_echo: Pin no of left sensor echo.
- * @param sensor_right_ping: Pin no of right sensor ping.
- * @param sensor_right_echo: Pin no of right sensor echo.
+ * @param pins: Array of pins.
+ * @param pin_amt: Number of pins to be attached.
  */
 
-static sensor_controls construct_sensor(
-		int sensor_front_ping, int sensor_front_echo,
-		int sensor_back_ping, int sensor_back_echo,
-		int sensor_left_ping, int sensor_left_echo,
-		int sensor_right_ping, int sensor_right_echo
-) {
-	sensor_controls controls = {
-		.types = {
-			[SENSOR_FRONT] = (sensor_pins) { sensor_front_ping, sensor_front_echo },
-			[SENSOR_BACK ] = (sensor_pins) { sensor_back_ping, sensor_back_echo },
-			[SENSOR_LEFT ] = (sensor_pins) { sensor_left_ping, sensor_left_echo },
-			[SENSOR_RIGHT] = (sensor_pins) { sensor_right_ping, sensor_right_echo }
-		}
-	};
-	__init_sensors_pin(controls);
+static sensor_controls construct_sensor(int* pins, int pin_amt) {
+	sensor_controls controls;
+
+	for (int j = 0, i = 0; i < pin_amt; i += 2) {
+		controls.types[j++] = (sensor_pins) { pins[i], pins[i+1] };
+	}
+	__init_sensors_pin(controls, pin_amt);
 
 	return controls;
 }

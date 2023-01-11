@@ -1,9 +1,6 @@
 #include "camera.h"
 #include "config.h"
 
-#define FLASH 3
-#define FLASH_PIN 4
-
 static int flash_state = 0;
 
 static WiFiClient client;
@@ -86,7 +83,7 @@ void loop() {
 
 	// Reading data from server and sending to arduino using serials.
 	while (client.available()) {
-		String inst = client.readStringUntil('\r');
+		String inst = client.readStringUntil('\n');
 		int idx = inst.indexOf(' ');
 		int header = inst.substring(0, idx).toInt();
 		int value  = inst.substring(idx+1, inst.length()-1).toInt();
